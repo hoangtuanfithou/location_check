@@ -12,6 +12,7 @@ import Alamofire
 import AlamofireObjectMapper
 import ReachabilitySwift
 import CoreLocation
+import UserNotifications
 
 //1. Please write a single view application that needs to send some data (any arbitrary JSON) using HTTP POST to URL1, ONLY using Wifi network. If the result contains fields latitude, longitude and radius, then create a Region Monitoring Alert with the given data. You are also required to write codes that push a local notification with message “Entered" if the user entered this region.
 //2. Send some other data (other JSON) request to URL2 ONLY when it is on Cellular data. If it gets a collection of doctors (or any other) then please show them on table view, list view, etc. and save them locally (using SQLite, CoreData or Realm, etc.)
@@ -30,6 +31,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         reachabilitySetup()
+        showLocalNotification()
     }
     
     private func reachabilitySetup() {
@@ -126,6 +128,7 @@ extension ViewController: CLLocationManagerDelegate {
     }
     
     private func startMonitoring(regionResponse: RegionResponse) {
+        
         if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             return
         }
@@ -144,8 +147,30 @@ extension ViewController: CLLocationManagerDelegate {
         }
     }
     
-    private func showLocalNotification() {
-        
+    func showLocalNotification() {
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        let options: UNAuthorizationOptions = [.alert, .sound]
+        center.requestAuthorization(options: options) { (granted, error) in
+            let content = UNMutableNotificationContent()
+            content.title = "10 Second Notification Demo"
+            content.subtitle = "From MakeAppPie.com"
+            content.body = "Notification after 10 seconds - Your pizza is Ready!!"
+            content.categoryIdentifier = "message"
+            
+            let trigger = UNTimeIntervalNotificationTrigger(
+                timeInterval: 10.0,
+                repeats: false)
+            let request = UNNotificationRequest(
+                identifier: "10.second.message",
+                content: content,
+                trigger: trigger
+            )
+            UNUserNotificationCenter.current().add(request) { (error) in
+                // handle the error if needed
+                print(error)
+            }
+        }
     }
     
     // MARK: CLLocationManagerDelegate
@@ -155,4 +180,16 @@ extension ViewController: CLLocationManagerDelegate {
         }
     }
     
+}
+
+extension ViewController: UNUserNotificationCenterDelegate {
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(UNNotificationPresentationOptions.alert)
+    }
+    
+    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        completionHandler()
+    }
+
+
 }
