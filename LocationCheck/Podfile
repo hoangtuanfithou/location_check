@@ -8,7 +8,8 @@ target 'LocationCheck' do
   # Pods for LocationCheck
   pod 'AlamofireObjectMapper'
   pod 'SVProgressHUD'
-
+  pod 'ReachabilitySwift'
+  
   target 'LocationCheckTests' do
     inherit! :search_paths
     # Pods for testing
