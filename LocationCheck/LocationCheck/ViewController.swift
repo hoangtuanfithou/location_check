@@ -24,14 +24,12 @@ class ViewController: UIViewController {
 
     let reachability = Reachability()!
     var listDoctor: [DoctorResponse]?
-    let locationManager = CLLocationManager()
 
     @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         reachabilitySetup()
-        showLocalNotification()
     }
     
     private func reachabilitySetup() {
@@ -65,7 +63,7 @@ class ViewController: UIViewController {
             SVProgressHUD.dismiss()
             if response.result.isSuccess && response.response?.statusCode == 200,
                 let region = response.result.value {
-                debugPrint(region)
+                self.setupLocationNotificationTrigger(region)
             }
         }
     }
@@ -106,48 +104,13 @@ extension ViewController: UITableViewDataSource {
 
 }
 
-extension ViewController: CLLocationManagerDelegate {
-
-    private func requestLocation() {
-        // location
-        locationManager.delegate = self
-        locationManager.requestAlwaysAuthorization()
-    }
+extension ViewController: UNUserNotificationCenterDelegate {
     
-    private func getRegion(_ regionResponse: RegionResponse) -> CLCircularRegion? {
+    func setupLocationNotificationTrigger(_ regionResponse: RegionResponse) {
         guard let latitude = regionResponse.latitude, let longitude = regionResponse.longitude, let radius = regionResponse.radius else {
-            return nil
-        }
-
-        let rightRadius = min(radius, locationManager.maximumRegionMonitoringDistance)
-        let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-        let region = CLCircularRegion(center: coordinate, radius: rightRadius, identifier: "LocationCheck")
-
-        region.notifyOnEntry = true
-        return region
-    }
-    
-    private func startMonitoring(regionResponse: RegionResponse) {
-        
-        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             return
         }
-        if CLLocationManager.authorizationStatus() != .authorizedAlways {
-            return
-        }
-        if let region = self.getRegion(regionResponse) {
-            locationManager.startMonitoring(for: region)
-        }
-    }
-    
-    private func stopMonitoring(regionResponse: RegionResponse) {
-        for region in locationManager.monitoredRegions {
-            guard let circularRegion = region as? CLCircularRegion else { continue }
-            locationManager.stopMonitoring(for: circularRegion)
-        }
-    }
-    
-    func showLocalNotification() {
+
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         let options: UNAuthorizationOptions = [.alert, .sound]
@@ -158,38 +121,19 @@ extension ViewController: CLLocationManagerDelegate {
             content.body = "Notification after 10 seconds - Your pizza is Ready!!"
             content.categoryIdentifier = "message"
             
-            let trigger = UNTimeIntervalNotificationTrigger(
-                timeInterval: 10.0,
-                repeats: false)
-            let request = UNNotificationRequest(
-                identifier: "10.second.message",
-                content: content,
-                trigger: trigger
-            )
-            UNUserNotificationCenter.current().add(request) { (error) in
-                // handle the error if needed
-                print(error)
-            }
-        }
-    }
-    
-    // MARK: CLLocationManagerDelegate
-    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        if region is CLCircularRegion {
-            self.showLocalNotification()
-        }
-    }
-    
-}
+            let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let region = CLCircularRegion(center: center, radius: radius, identifier: "Location")
+            region.notifyOnEntry = true
+            let locationTrigger = UNLocationNotificationTrigger(region: region, repeats: true)
 
-extension ViewController: UNUserNotificationCenterDelegate {
+            let request = UNNotificationRequest(identifier: "10.second.message", content: content, trigger: locationTrigger)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        }
+    }
+    
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(UNNotificationPresentationOptions.alert)
     }
     
-    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        completionHandler()
-    }
-
-
 }
+
