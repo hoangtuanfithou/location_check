@@ -31,7 +31,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         reachabilitySetup()
-        showLocalNotification()
+        requestLocation()
     }
     
     private func reachabilitySetup() {
@@ -65,7 +65,7 @@ class ViewController: UIViewController {
             SVProgressHUD.dismiss()
             if response.result.isSuccess && response.response?.statusCode == 200,
                 let region = response.result.value {
-                debugPrint(region)
+                self.startMonitoring(regionResponse: region)
             }
         }
     }
@@ -108,7 +108,7 @@ extension ViewController: UITableViewDataSource {
 
 extension ViewController: CLLocationManagerDelegate {
 
-    private func requestLocation() {
+    func requestLocation() {
         // location
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
@@ -127,8 +127,7 @@ extension ViewController: CLLocationManagerDelegate {
         return region
     }
     
-    private func startMonitoring(regionResponse: RegionResponse) {
-        
+    func startMonitoring(regionResponse: RegionResponse) {
         if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             return
         }
@@ -147,29 +146,19 @@ extension ViewController: CLLocationManagerDelegate {
         }
     }
     
-    func showLocalNotification() {
+    private func showLocalNotification() {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         let options: UNAuthorizationOptions = [.alert, .sound]
         center.requestAuthorization(options: options) { (granted, error) in
             let content = UNMutableNotificationContent()
-            content.title = "10 Second Notification Demo"
-            content.subtitle = "From MakeAppPie.com"
-            content.body = "Notification after 10 seconds - Your pizza is Ready!!"
-            content.categoryIdentifier = "message"
+            content.title = "Entered"
             
             let trigger = UNTimeIntervalNotificationTrigger(
                 timeInterval: 10.0,
                 repeats: false)
-            let request = UNNotificationRequest(
-                identifier: "10.second.message",
-                content: content,
-                trigger: trigger
-            )
-            UNUserNotificationCenter.current().add(request) { (error) in
-                // handle the error if needed
-                print(error)
-            }
+            let request = UNNotificationRequest(identifier: "LocationCheck", content: content, trigger: trigger)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }
     }
     
@@ -186,10 +175,4 @@ extension ViewController: UNUserNotificationCenterDelegate {
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(UNNotificationPresentationOptions.alert)
     }
-    
-    public func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-        completionHandler()
-    }
-
-
 }
