@@ -10,9 +10,9 @@ import ObjectMapper
 
 class RegionResponse: BaseModel {
 
-    var latitude: Float?
-    var longitude: Float?
-    var radius: Int?
+    var latitude: Double?
+    var longitude: Double?
+    var radius: Double?
 
     override func mapping(map: Map) {
         super.mapping(map: map)

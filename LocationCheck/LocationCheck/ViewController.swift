@@ -11,6 +11,7 @@ import SVProgressHUD
 import Alamofire
 import AlamofireObjectMapper
 import ReachabilitySwift
+import CoreLocation
 
 //1. Please write a single view application that needs to send some data (any arbitrary JSON) using HTTP POST to URL1, ONLY using Wifi network. If the result contains fields latitude, longitude and radius, then create a Region Monitoring Alert with the given data. You are also required to write codes that push a local notification with message “Entered" if the user entered this region.
 //2. Send some other data (other JSON) request to URL2 ONLY when it is on Cellular data. If it gets a collection of doctors (or any other) then please show them on table view, list view, etc. and save them locally (using SQLite, CoreData or Realm, etc.)
@@ -22,14 +23,19 @@ class ViewController: UIViewController {
 
     let reachability = Reachability()!
     var listDoctor: [DoctorResponse]?
-    
+    let locationManager = CLLocationManager()
+
     @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        reachabilitySetup()
+    }
+    
+    private func reachabilitySetup() {
         reachability.whenReachable = { [weak self] reachability in
             if reachability.isReachableViaWiFi {
-//                self?.getRegionInfo()
+                //                self?.getRegionInfo()
                 self?.getListData()
             } else if reachability.isReachableViaWWAN {
                 self?.getListData()
@@ -96,4 +102,25 @@ extension ViewController: UITableViewDataSource {
         return cell
     }
 
+}
+
+extension ViewController: CLLocationManagerDelegate {
+
+    private func requestLocation() {
+        // location
+        locationManager.delegate = self
+        locationManager.requestWhenInUseAuthorization()
+    }
+    
+    private func getRegion(regionResponse: RegionResponse) -> CLCircularRegion? {
+        guard let latitude = regionResponse.latitude, let longitude = regionResponse.longitude, let radius = regionResponse.radius else {
+            return nil
+        }
+        let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        let region = CLCircularRegion(center: coordinate, radius: radius, identifier: "LocationCheck")
+
+        region.notifyOnEntry = true
+        return region
+    }
+    
 }
