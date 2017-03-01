@@ -109,18 +109,50 @@ extension ViewController: CLLocationManagerDelegate {
     private func requestLocation() {
         // location
         locationManager.delegate = self
-        locationManager.requestWhenInUseAuthorization()
+        locationManager.requestAlwaysAuthorization()
     }
     
-    private func getRegion(regionResponse: RegionResponse) -> CLCircularRegion? {
+    private func getRegion(_ regionResponse: RegionResponse) -> CLCircularRegion? {
         guard let latitude = regionResponse.latitude, let longitude = regionResponse.longitude, let radius = regionResponse.radius else {
             return nil
         }
+
+        let rightRadius = min(radius, locationManager.maximumRegionMonitoringDistance)
         let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
-        let region = CLCircularRegion(center: coordinate, radius: radius, identifier: "LocationCheck")
+        let region = CLCircularRegion(center: coordinate, radius: rightRadius, identifier: "LocationCheck")
 
         region.notifyOnEntry = true
         return region
+    }
+    
+    private func startMonitoring(regionResponse: RegionResponse) {
+        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+            return
+        }
+        if CLLocationManager.authorizationStatus() != .authorizedAlways {
+            return
+        }
+        if let region = self.getRegion(regionResponse) {
+            locationManager.startMonitoring(for: region)
+        }
+    }
+    
+    private func stopMonitoring(regionResponse: RegionResponse) {
+        for region in locationManager.monitoredRegions {
+            guard let circularRegion = region as? CLCircularRegion else { continue }
+            locationManager.stopMonitoring(for: circularRegion)
+        }
+    }
+    
+    private func showLocalNotification() {
+        
+    }
+    
+    // MARK: CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            self.showLocalNotification()
+        }
     }
     
 }
