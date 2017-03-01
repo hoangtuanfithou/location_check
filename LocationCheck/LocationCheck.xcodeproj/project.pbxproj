@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		48458B6A1E67288900E87D58 /* ListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48458B691E67288900E87D58 /* ListResponse.swift */; };
 		4885BAF31E66D33500BFF6FD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4885BAF21E66D33500BFF6FD /* AppDelegate.swift */; };
 		4885BAF51E66D33500BFF6FD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4885BAF41E66D33500BFF6FD /* ViewController.swift */; };
 		4885BAF81E66D33500BFF6FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4885BAF61E66D33500BFF6FD /* Main.storyboard */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		48458B691E67288900E87D58 /* ListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListResponse.swift; sourceTree = "<group>"; };
 		4885BAEF1E66D33500BFF6FD /* LocationCheck.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationCheck.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4885BAF21E66D33500BFF6FD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4885BAF41E66D33500BFF6FD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 				4885BB281E66DAF100BFF6FD /* BaseModel.swift */,
 				4885BB241E66DAD000BFF6FD /* RegionRequest.swift */,
 				4885BB251E66DAD000BFF6FD /* RegionResponse.swift */,
+				48458B691E67288900E87D58 /* ListResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -470,6 +473,7 @@
 			files = (
 				4885BB291E66DAF100BFF6FD /* BaseModel.swift in Sources */,
 				4885BAFB1E66D33500BFF6FD /* LocationCheck.xcdatamodeld in Sources */,
+				48458B6A1E67288900E87D58 /* ListResponse.swift in Sources */,
 				4885BAF51E66D33500BFF6FD /* ViewController.swift in Sources */,
 				4885BAF31E66D33500BFF6FD /* AppDelegate.swift in Sources */,
 				4885BB261E66DAD000BFF6FD /* RegionRequest.swift in Sources */,

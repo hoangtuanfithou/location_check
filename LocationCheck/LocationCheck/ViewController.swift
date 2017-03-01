@@ -21,13 +21,16 @@ let listUrl = "http://beta.json-generator.com/api/json/get/EyDYcqyqG?indent=1"
 class ViewController: UIViewController {
 
     let reachability = Reachability()!
-
+    var listDoctor: [DoctorResponse]?
+    
+    @IBOutlet weak var tableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         reachability.whenReachable = { [weak self] reachability in
             if reachability.isReachableViaWiFi {
-                self?.getRegionInfo()
+//                self?.getRegionInfo()
+                self?.getListData()
             } else if reachability.isReachableViaWWAN {
                 self?.getListData()
             }
@@ -64,14 +67,33 @@ class ViewController: UIViewController {
         regionRequest.userInfo = "user info"
         
         SVProgressHUD.show()
-        Alamofire.request(regionUrl, method: .get, parameters: regionRequest.toJSON()).responseObject { (response: DataResponse<RegionResponse>) in
+        Alamofire.request(listUrl, method: .get, parameters: regionRequest.toJSON()).responseArray { (response: DataResponse<[DoctorResponse]>) in
             SVProgressHUD.dismiss()
             if response.result.isSuccess && response.response?.statusCode == 200,
-                let region = response.result.value {
-                debugPrint(region)
+                let listResponse = response.result.value {
+                debugPrint(listResponse)
+                self.listDoctor = listResponse
+                self.tableView.reloadData()
             }
         }
     }
 
 }
 
+extension ViewController: UITableViewDataSource {
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listDoctor?.count ?? 0
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TableViewCell", for: indexPath)
+        
+        let doctor = listDoctor?[indexPath.row]
+        cell.textLabel?.text = doctor?.name
+        cell.detailTextLabel?.text = doctor?.address
+        
+        return cell
+    }
+
+}
