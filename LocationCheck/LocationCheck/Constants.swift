@@ -8,9 +8,16 @@
 
 import UIKit
 import Foundation
+import CoreData
 
 let appDelegate = UIApplication.shared.delegate as! AppDelegate
-let mainContext = appDelegate.persistentContainer.viewContext
+var mainContext: NSManagedObjectContext {
+    if #available(iOS 10.0, *) {
+        return appDelegate.persistentContainer.viewContext
+    } else {
+        return appDelegate.managedObjectContext
+    } 
+}
 
 let regionUrl = "http://beta.json-generator.com/api/json/get/N18P-91qf?indent=2"
 let listUrl = "http://beta.json-generator.com/api/json/get/EyDYcqyqG?indent=1"

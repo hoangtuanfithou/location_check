@@ -78,9 +78,13 @@ class ViewBusiness: NSObject {
                 let listResponse = response.result.value {
                 // clean
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Doctor")
-                let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                if #available(iOS 9.0, *) {
+                    let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                } else {
+                    // Fallback on earlier versions
+                }
                 do {
-                    try mainContext.persistentStoreCoordinator?.execute(deleteRequest, with: mainContext)
+//                    try mainContext.persistentStoreCoordinator?.execute(deleteRequest, with: mainContext)
                 } catch {
                     
                 }
@@ -132,6 +136,7 @@ extension ViewBusiness: CLLocationManagerDelegate {
         }
     }
     
+    @available(iOS 10.0, *)
     private func showLocalNotification() {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
@@ -146,16 +151,25 @@ extension ViewBusiness: CLLocationManagerDelegate {
         }
     }
     
+    private func showiOS9LocalNotification() {
+    
+    }
+    
     // MARK: CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {
-            self.showLocalNotification()
+            if #available(iOS 10.0, *) {
+                self.showLocalNotification()
+            } else {
+                self.showiOS9LocalNotification()
+            }
         }
     }
     
 }
 
 extension ViewBusiness: UNUserNotificationCenterDelegate {
+    @available(iOS 10.0, *)
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(UNNotificationPresentationOptions.alert)
     }
