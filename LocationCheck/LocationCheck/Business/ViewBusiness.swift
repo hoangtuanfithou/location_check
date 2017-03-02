@@ -35,6 +35,22 @@ class ViewBusiness: NSObject {
         } catch {
             debugPrint("Unable to start notifier")
         }
+        
+        if !reachability.isReachable {
+            showSavedListData()
+        }
+    }
+    
+    // MARK : Search history using Core Data
+    private func showSavedListData() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Doctor")
+        do {
+            let fetchedEntities = try mainContext.fetch(fetchRequest)
+            if let doctors = fetchedEntities as? [DoctorResponse] {
+                viewController?.showListData(listResponse: doctors)
+            }
+        } catch {
+        }
     }
     
     private func getRegionInfo() {
@@ -42,11 +58,11 @@ class ViewBusiness: NSObject {
         regionRequest.userInfo = "user info"
         
         SVProgressHUD.show()
-        Alamofire.request(regionUrl, method: .get, parameters: regionRequest.toJSON()).responseObject { (response: DataResponse<RegionResponse>) in
+        Alamofire.request(regionUrl, method: .get, parameters: regionRequest.toJSON()).responseObject { [weak self] (response: DataResponse<RegionResponse>) in
             SVProgressHUD.dismiss()
             if response.result.isSuccess && response.response?.statusCode == 200,
                 let region = response.result.value {
-                self.startMonitoring(regionResponse: region)
+                self?.startMonitoring(regionResponse: region)
             }
         }
     }
