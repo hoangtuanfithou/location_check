@@ -22,6 +22,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         viewBusiness.viewController = self
         viewBusiness.reachabilitySetup()
+        viewBusiness.requestLocation()
     }
     
     func showListData(listResponse: [DoctorResponse]) {

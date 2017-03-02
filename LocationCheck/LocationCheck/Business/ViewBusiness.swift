@@ -62,7 +62,7 @@ class ViewBusiness: NSObject {
             SVProgressHUD.dismiss()
             if response.result.isSuccess && response.response?.statusCode == 200,
                 let region = response.result.value {
-                self?.setupLocationNotificationTrigger(region)
+                self?.startMonitoring(regionResponse: region)
             }
         }
     }
@@ -93,13 +93,46 @@ class ViewBusiness: NSObject {
 
 }
 
-extension ViewBusiness: UNUserNotificationCenterDelegate {
+extension ViewBusiness: CLLocationManagerDelegate {
     
-    func setupLocationNotificationTrigger(_ regionResponse: RegionResponse) {
-        guard let latitude = regionResponse.latitude, let longitude = regionResponse.longitude, let radius = regionResponse.radius else {
+    func requestLocation() {
+        locationManager.delegate = self
+        locationManager.requestAlwaysAuthorization()
+    }
+    
+    func startMonitoring(regionResponse: RegionResponse) {
+        if !CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             return
         }
+        if CLLocationManager.authorizationStatus() != .authorizedAlways {
+            return
+        }
+        if let region = self.getRegion(regionResponse) {
+            locationManager.startMonitoring(for: region)
+        }
+    }
+    
+    private func getRegion(_ regionResponse: RegionResponse) -> CLCircularRegion? {
+        guard let latitude = regionResponse.latitude, let longitude = regionResponse.longitude, let radius = regionResponse.radius else {
+            return nil
+        }
         
+        let rightRadius = min(radius, locationManager.maximumRegionMonitoringDistance)
+        let coordinate = CLLocationCoordinate2DMake(latitude, longitude)
+        let region = CLCircularRegion(center: coordinate, radius: rightRadius, identifier: "LocationCheck")
+        
+        region.notifyOnEntry = true
+        return region
+    }
+    
+    private func stopMonitoring(regionResponse: RegionResponse) {
+        for region in locationManager.monitoredRegions {
+            guard let circularRegion = region as? CLCircularRegion else { continue }
+            locationManager.stopMonitoring(for: circularRegion)
+        }
+    }
+    
+    private func showLocalNotification() {
         let center = UNUserNotificationCenter.current()
         center.delegate = self
         let options: UNAuthorizationOptions = [.alert, .sound]
@@ -107,18 +140,23 @@ extension ViewBusiness: UNUserNotificationCenterDelegate {
             let content = UNMutableNotificationContent()
             content.title = "Entered"
             
-            let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let region = CLCircularRegion(center: center, radius: radius, identifier: "LocationCheck")
-            region.notifyOnEntry = true
-            let locationTrigger = UNLocationNotificationTrigger(region: region, repeats: true)
-            
-            let request = UNNotificationRequest(identifier: "LocationCheck", content: content, trigger: locationTrigger)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10.0, repeats: false)
+            let request = UNNotificationRequest(identifier: "LocationCheck", content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }
     }
     
+    // MARK: CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if region is CLCircularRegion {
+            self.showLocalNotification()
+        }
+    }
+    
+}
+
+extension ViewBusiness: UNUserNotificationCenterDelegate {
     public func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         completionHandler(UNNotificationPresentationOptions.alert)
     }
-    
 }
