@@ -132,9 +132,9 @@
 		4885BAF11E66D33500BFF6FD /* LocationCheck */ = {
 			isa = PBXGroup;
 			children = (
-				48AD06B81E67C5BD00DBB1CC /* Business */,
 				48AD06B21E67C04D00DBB1CC /* Common */,
 				4885BB231E66DAD000BFF6FD /* Model */,
+				48AD06B81E67C5BD00DBB1CC /* Business */,
 				48AD06B71E67C13B00DBB1CC /* ViewController */,
 				48AD06B61E67C12500DBB1CC /* Storyboard */,
 				48AD06B51E67C11400DBB1CC /* SupportingFiles */,

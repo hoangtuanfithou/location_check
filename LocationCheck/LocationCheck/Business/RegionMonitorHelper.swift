@@ -60,6 +60,30 @@ class RegionMonitorHelper: NSObject, CLLocationManagerDelegate, UNUserNotificati
         }
     }
     
+    // Uisng LocationNotificationTrigger
+    private func setupLocationNotificationTrigger(_ regionResponse: RegionResponse) {
+        guard let latitude = regionResponse.latitude, let longitude = regionResponse.longitude, let radius = regionResponse.radius else {
+            return
+        }
+        
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        let options: UNAuthorizationOptions = [.alert, .sound]
+        center.requestAuthorization(options: options) { (granted, error) in
+            let content = UNMutableNotificationContent()
+            content.body = "Entered"
+            
+            let rightRadius = min(radius, self.locationManager.maximumRegionMonitoringDistance)
+            let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            let region = CLCircularRegion(center: center, radius: rightRadius, identifier: "LocationCheck")
+            region.notifyOnEntry = true
+            let locationTrigger = UNLocationNotificationTrigger(region: region, repeats: true)
+            
+            let request = UNNotificationRequest(identifier: "LocationCheck", content: content, trigger: locationTrigger)
+            UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
+        }
+    }
+    
     // MARK: CLLocationManagerDelegate
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         if region is CLCircularRegion {

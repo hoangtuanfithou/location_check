@@ -86,7 +86,6 @@ class ViewBusiness: NSObject {
                 do {
                     try mainContext.persistentStoreCoordinator?.execute(deleteRequest, with: mainContext)
                 } catch {
-                    
                 }
                 // save
                 appDelegate.saveContext()
