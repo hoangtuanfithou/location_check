@@ -96,7 +96,6 @@ class ViewBusiness: NSObject {
 extension ViewBusiness: CLLocationManagerDelegate {
     
     func requestLocation() {
-        // location
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
     }
@@ -141,9 +140,7 @@ extension ViewBusiness: CLLocationManagerDelegate {
             let content = UNMutableNotificationContent()
             content.title = "Entered"
             
-            let trigger = UNTimeIntervalNotificationTrigger(
-                timeInterval: 10.0,
-                repeats: false)
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 10.0, repeats: false)
             let request = UNNotificationRequest(identifier: "LocationCheck", content: content, trigger: trigger)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }
