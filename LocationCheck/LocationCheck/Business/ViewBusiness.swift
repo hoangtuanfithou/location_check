@@ -16,7 +16,7 @@ import CoreData
 class ViewBusiness: NSObject {
     
     let reachability = Reachability()!
-    let regionMonitor = RegionMonitorHelper()
+    private let regionMonitor = RegionMonitorHelper()
     weak var viewController: ViewController?
     
     func setup() {
@@ -28,6 +28,8 @@ class ViewBusiness: NSObject {
         reachability.whenReachable = { [weak self] reachability in
             if reachability.isReachableViaWiFi {
                 self?.getRegionInfo()
+                self?.getListData()
+
             } else if reachability.isReachableViaWWAN {
                 self?.getListData()
             }
@@ -36,7 +38,6 @@ class ViewBusiness: NSObject {
         do {
             try reachability.startNotifier()
         } catch {
-            debugPrint("Unable to start notifier")
         }
         
         if !reachability.isReachable {
@@ -58,10 +59,9 @@ class ViewBusiness: NSObject {
     
     internal func getRegionInfo(completion: ((RegionResponse) -> Void)? = nil) {
         let regionRequest = RegionRequest()
-        regionRequest.userInfo = "user info"
         
         SVProgressHUD.show()
-        Alamofire.request(regionUrl, method: .get, parameters: regionRequest.toJSON()).responseObject { [weak self] (response: DataResponse<RegionResponse>) in
+        Alamofire.request(regionUrl, method: .post, parameters: regionRequest.toJSON()).responseObject { [weak self] (response: DataResponse<RegionResponse>) in
             SVProgressHUD.dismiss()
             if response.result.isSuccess && response.response?.statusCode == 200,
                 let region = response.result.value {
@@ -73,10 +73,9 @@ class ViewBusiness: NSObject {
     
     internal func getListData(completion: (([DoctorResponse]) -> Void)? = nil) {
         let regionRequest = RegionRequest()
-        regionRequest.userInfo = "user info"
         
         SVProgressHUD.show()
-        Alamofire.request(listUrl, method: .get, parameters: regionRequest.toJSON()).responseArray { [weak self] (response: DataResponse<[DoctorResponse]>) in
+        Alamofire.request(listUrl, method: .post, parameters: regionRequest.toJSON()).responseArray { [weak self] (response: DataResponse<[DoctorResponse]>) in
             SVProgressHUD.dismiss()
             if response.result.isSuccess && response.response?.statusCode == 200,
                 let listResponse = response.result.value {

@@ -12,7 +12,7 @@ import UserNotifications
 
 class RegionMonitorHelper: NSObject, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
     
-    let locationManager = CLLocationManager()
+    private let locationManager = CLLocationManager()
     
     func requestLocation() {
         locationManager.delegate = self
