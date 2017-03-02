@@ -21,6 +21,7 @@
 		4885BB291E66DAF100BFF6FD /* BaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4885BB281E66DAF100BFF6FD /* BaseModel.swift */; };
 		48AD06B41E67C09000DBB1CC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AD06B31E67C09000DBB1CC /* Constants.swift */; };
 		48AD06BA1E67C63900DBB1CC /* ViewBusiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AD06B91E67C63900DBB1CC /* ViewBusiness.swift */; };
+		48DC389F1E67FF33004907B1 /* RegionMonitorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DC389E1E67FF33004907B1 /* RegionMonitorHelper.swift */; };
 		5A5A1B454381EA1A7EFE05D4 /* Pods_LocationCheckTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 701ACF5335C6A487CA0CDA66 /* Pods_LocationCheckTests.framework */; };
 		8F0488DF9CCDF19667D41E13 /* Pods_LocationCheckUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F77D422498697211BCA46E8B /* Pods_LocationCheckUITests.framework */; };
 		E33C280736515DC15F0101E7 /* Pods_LocationCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64A15BF0D0CF198A7B119AA1 /* Pods_LocationCheck.framework */; };
@@ -64,6 +65,7 @@
 		4885BB281E66DAF100BFF6FD /* BaseModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseModel.swift; sourceTree = "<group>"; };
 		48AD06B31E67C09000DBB1CC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		48AD06B91E67C63900DBB1CC /* ViewBusiness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBusiness.swift; sourceTree = "<group>"; };
+		48DC389E1E67FF33004907B1 /* RegionMonitorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMonitorHelper.swift; sourceTree = "<group>"; };
 		64A15BF0D0CF198A7B119AA1 /* Pods_LocationCheck.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LocationCheck.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		701ACF5335C6A487CA0CDA66 /* Pods_LocationCheckTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LocationCheckTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8662D3329D5CB9B5D6B2EAD4 /* Pods-LocationCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationCheck.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationCheck/Pods-LocationCheck.debug.xcconfig"; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				48AD06B91E67C63900DBB1CC /* ViewBusiness.swift */,
+				48DC389E1E67FF33004907B1 /* RegionMonitorHelper.swift */,
 			);
 			path = Business;
 			sourceTree = "<group>";
@@ -522,6 +525,7 @@
 				48AD06BA1E67C63900DBB1CC /* ViewBusiness.swift in Sources */,
 				48458B6A1E67288900E87D58 /* DoctorResponse.swift in Sources */,
 				4885BAF51E66D33500BFF6FD /* ViewController.swift in Sources */,
+				48DC389F1E67FF33004907B1 /* RegionMonitorHelper.swift in Sources */,
 				4885BAF31E66D33500BFF6FD /* AppDelegate.swift in Sources */,
 				4885BB261E66DAD000BFF6FD /* RegionRequest.swift in Sources */,
 				4885BB271E66DAD000BFF6FD /* RegionResponse.swift in Sources */,

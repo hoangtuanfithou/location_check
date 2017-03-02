@@ -21,8 +21,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewBusiness.viewController = self
-        viewBusiness.reachabilitySetup()
-        viewBusiness.requestLocation()
+        viewBusiness.setup()
     }
     
     func showListData(listResponse: [DoctorResponse]) {
