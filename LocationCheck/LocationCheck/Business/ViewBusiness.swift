@@ -14,7 +14,7 @@ import ReachabilitySwift
 import CoreData
 
 class ViewBusiness: NSObject {
-
+    
     let reachability = Reachability()!
     let regionMonitor = RegionMonitorHelper()
     weak var viewController: ViewController?
@@ -44,7 +44,7 @@ class ViewBusiness: NSObject {
         }
     }
     
-    // MARK : Search history using Core Data
+    // MARK : Get data
     internal func showSavedListData() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Doctor")
         do {
@@ -95,5 +95,5 @@ class ViewBusiness: NSObject {
             }
         }
     }
-
+    
 }

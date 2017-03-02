@@ -13,7 +13,7 @@ import UserNotifications
 class RegionMonitorHelper: NSObject, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
     
     let locationManager = CLLocationManager()
-
+    
     func requestLocation() {
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
@@ -31,7 +31,7 @@ class RegionMonitorHelper: NSObject, CLLocationManagerDelegate, UNUserNotificati
         }
     }
     
-    // get Region for Monitor
+    // Get Region for Monitor
     private func getRegion(_ regionResponse: RegionResponse) -> CLCircularRegion? {
         guard let latitude = regionResponse.latitude, let longitude = regionResponse.longitude, let radius = regionResponse.radius else {
             return nil
@@ -44,7 +44,7 @@ class RegionMonitorHelper: NSObject, CLLocationManagerDelegate, UNUserNotificati
         region.notifyOnEntry = true
         return region
     }
-  
+    
     // Create local push notifcation
     private func showLocalNotification() {
         let center = UNUserNotificationCenter.current()
