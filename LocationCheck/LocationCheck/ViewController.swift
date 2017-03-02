@@ -13,7 +13,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UITableView?
     var listDoctor: [DoctorResponse]?
     
     let viewBusiness = ViewBusiness()
@@ -26,7 +26,7 @@ class ViewController: UIViewController {
     
     func showListData(listResponse: [DoctorResponse]) {
         self.listDoctor = listResponse
-        self.tableView.reloadData()
+        self.tableView?.reloadData()
     }
     
 }

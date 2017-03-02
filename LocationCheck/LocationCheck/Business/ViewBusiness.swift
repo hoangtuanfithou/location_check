@@ -45,7 +45,7 @@ class ViewBusiness: NSObject {
     }
     
     // MARK : Search history using Core Data
-    private func showSavedListData() {
+    internal func showSavedListData() {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Doctor")
         do {
             let fetchedEntities = try mainContext.fetch(fetchRequest)
@@ -56,7 +56,7 @@ class ViewBusiness: NSObject {
         }
     }
     
-    private func getRegionInfo() {
+    internal func getRegionInfo(completion: ((RegionResponse) -> Void)? = nil) {
         let regionRequest = RegionRequest()
         regionRequest.userInfo = "user info"
         
@@ -66,11 +66,12 @@ class ViewBusiness: NSObject {
             if response.result.isSuccess && response.response?.statusCode == 200,
                 let region = response.result.value {
                 self?.regionMonitor.startMonitoring(regionResponse: region)
+                completion?(region)
             }
         }
     }
     
-    private func getListData() {
+    internal func getListData(completion: (([DoctorResponse]) -> Void)? = nil) {
         let regionRequest = RegionRequest()
         regionRequest.userInfo = "user info"
         
@@ -90,6 +91,7 @@ class ViewBusiness: NSObject {
                 // save
                 appDelegate.saveContext()
                 self?.viewController?.showListData(listResponse: listResponse)
+                completion?(listResponse)
             }
         }
     }

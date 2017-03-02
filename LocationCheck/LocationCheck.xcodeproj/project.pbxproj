@@ -22,6 +22,7 @@
 		48AD06B41E67C09000DBB1CC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AD06B31E67C09000DBB1CC /* Constants.swift */; };
 		48AD06BA1E67C63900DBB1CC /* ViewBusiness.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48AD06B91E67C63900DBB1CC /* ViewBusiness.swift */; };
 		48DC389F1E67FF33004907B1 /* RegionMonitorHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DC389E1E67FF33004907B1 /* RegionMonitorHelper.swift */; };
+		48DC38A11E68094D004907B1 /* ViewBusinessTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48DC38A01E68094D004907B1 /* ViewBusinessTest.swift */; };
 		5A5A1B454381EA1A7EFE05D4 /* Pods_LocationCheckTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 701ACF5335C6A487CA0CDA66 /* Pods_LocationCheckTests.framework */; };
 		8F0488DF9CCDF19667D41E13 /* Pods_LocationCheckUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F77D422498697211BCA46E8B /* Pods_LocationCheckUITests.framework */; };
 		E33C280736515DC15F0101E7 /* Pods_LocationCheck.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64A15BF0D0CF198A7B119AA1 /* Pods_LocationCheck.framework */; };
@@ -66,6 +67,7 @@
 		48AD06B31E67C09000DBB1CC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		48AD06B91E67C63900DBB1CC /* ViewBusiness.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBusiness.swift; sourceTree = "<group>"; };
 		48DC389E1E67FF33004907B1 /* RegionMonitorHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionMonitorHelper.swift; sourceTree = "<group>"; };
+		48DC38A01E68094D004907B1 /* ViewBusinessTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewBusinessTest.swift; sourceTree = "<group>"; };
 		64A15BF0D0CF198A7B119AA1 /* Pods_LocationCheck.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LocationCheck.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		701ACF5335C6A487CA0CDA66 /* Pods_LocationCheckTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LocationCheckTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8662D3329D5CB9B5D6B2EAD4 /* Pods-LocationCheck.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LocationCheck.debug.xcconfig"; path = "Pods/Target Support Files/Pods-LocationCheck/Pods-LocationCheck.debug.xcconfig"; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				4885BB0A1E66D33500BFF6FD /* LocationCheckTests.swift */,
+				48DC38A01E68094D004907B1 /* ViewBusinessTest.swift */,
 				4885BB0C1E66D33500BFF6FD /* Info.plist */,
 			);
 			path = LocationCheckTests;
@@ -537,6 +540,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				48DC38A11E68094D004907B1 /* ViewBusinessTest.swift in Sources */,
 				4885BB0B1E66D33500BFF6FD /* LocationCheckTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
