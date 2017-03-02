@@ -116,17 +116,14 @@ extension ViewController: UNUserNotificationCenterDelegate {
         let options: UNAuthorizationOptions = [.alert, .sound]
         center.requestAuthorization(options: options) { (granted, error) in
             let content = UNMutableNotificationContent()
-            content.title = "10 Second Notification Demo"
-            content.subtitle = "From MakeAppPie.com"
-            content.body = "Notification after 10 seconds - Your pizza is Ready!!"
-            content.categoryIdentifier = "message"
+            content.body = "Entered"
             
             let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            let region = CLCircularRegion(center: center, radius: radius, identifier: "Location")
+            let region = CLCircularRegion(center: center, radius: radius, identifier: "LocationCheck")
             region.notifyOnEntry = true
             let locationTrigger = UNLocationNotificationTrigger(region: region, repeats: true)
 
-            let request = UNNotificationRequest(identifier: "10.second.message", content: content, trigger: locationTrigger)
+            let request = UNNotificationRequest(identifier: "LocationCheck", content: content, trigger: locationTrigger)
             UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
         }
     }
