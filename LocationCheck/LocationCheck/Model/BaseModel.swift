@@ -1,9 +1,9 @@
 //
 //  BaseModel.swift
-//  TravelRankingShare
+//  LocationCheck
 //
-//  Created by 長尾 昇太 on 2016/07/05.
-//  Copyright © 2016年 GMO Media, Inc. All rights reserved.
+//  Created by Nguyen Hoang Tuan on 3/2/17.
+//  Copyright © 2017 NHT. All rights reserved.
 //
 
 import ObjectMapper

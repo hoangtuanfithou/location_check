@@ -1,8 +1,8 @@
 //
 //  RegionResponse.swift
 //
-//  Create on 1/3/2017
-//  Copyright © 2017 GMO Media, Inc. All rights reserved.
+//  Created by Nguyen Hoang Tuan on 3/2/17.
+//  Copyright © 2017 NHT. All rights reserved.
 //
 
 import Foundation
